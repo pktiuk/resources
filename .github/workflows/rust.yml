@@ -1,0 +1,24 @@
+name: Rust
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Install Dependencies
+      run: sudo apt-get update && sudo apt-get install -y meson libglib2.0-dev libgtk-4-dev libadwaita-1-dev systemd polkit cargo appstream-util
+    - uses: actions/checkout@v3
+    - name: Build
+      run: meson . build --prefix=/usr/local
+    - name: Run tests
+      run: cargo test --verbose
